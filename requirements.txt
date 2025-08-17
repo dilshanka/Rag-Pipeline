@@ -1,0 +1,14 @@
+langchain
+langchain-chroma
+langchain-community
+langchain-openai
+rank-bm25
+torch
+sentence-transformers==2.7.0
+python-dotenv
+pymupdf
+chromadb
+uvicorn
+fastapi
+numpy
+transformers==4.40.2

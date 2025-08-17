@@ -10,11 +10,6 @@ app = FastAPI()
 class ChatRequest(BaseModel):
     message: str
 
-# @app.post("/chat")
-# async def chat(request: ChatRequest):
-#     response = rag_pipeline(request.message)
-#     return {"response": response}
-
 @app.post("/chat")
 async def chat(request: ChatRequest):
     response = rag_pipeline(request.message)
