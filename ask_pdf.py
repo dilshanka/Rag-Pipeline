@@ -25,15 +25,15 @@ logging.basicConfig(level=logging.INFO)
 #  Load or initialize embeddings
 
 def load_or_initialize_embeddings():
-    if os.path.exists('legal_bert_embeddings.pkl'):
+    if os.path.exists('academic_embeddings.pkl'):
         logging.info("Loading cached embeddings...")
-        with open('legal_bert_embeddings.pkl', 'rb') as f:
+        with open('academic_embeddings.pkl', 'rb') as f:
             embeddings = pickle.load(f)
         return embeddings
     else:
-        logging.info("Initializing new LEGAL-BERT embeddings...")
-        embeddings = HuggingFaceEmbeddings(model_name="nlpaueb/legal-bert-base-uncased")
-        with open('legal_bert_embeddings.pkl', 'wb') as f:
+        logging.info("Initializing new academic embeddings...")
+        embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        with open('academic_embeddings.pkl', 'wb') as f:
             pickle.dump(embeddings, f)
         return embeddings
 
@@ -53,7 +53,7 @@ def rerank(query, docs):
 #  Initialize  RAG system
 
 def initialize_rag_system():
-    load_dotenv()
+    load_dotenv(override=True)
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         logging.error("OPENAI_API_KEY not found in .env")
@@ -62,15 +62,15 @@ def initialize_rag_system():
     embeddings = load_or_initialize_embeddings()
 
     # Connect to ChromaDB
-    persist_directory = "./legal_db"
+    persist_directory = "./academic_db"
     if not os.path.exists(persist_directory):
-        logging.error("ChromaDB not found!")
+        logging.error("Academic database not found! Please run chromadbpdf.py first to process your documents.")
         return None
 
     vector_db = Chroma(
         persist_directory=persist_directory,
         embedding_function=embeddings,
-        collection_name="legal_docs",
+        collection_name="academic_docs",
     )
 
     if vector_db._collection.count() == 0:
@@ -108,19 +108,25 @@ def initialize_rag_system():
         base_retriever=multi_query_retriever
     )
 
-    # Prompt with citations
+    # Student-friendly prompt with citations
     prompt_template = """
-    You are a legal assistant. Use ONLY the provided legal documents to answer.
-    Include source citations in square brackets after each relevant fact.
-    If unsure, say: "Not enough information."
+    You are a helpful academic assistant for university students. Use ONLY the provided academic documents to answer questions.
+    
+    Guidelines:
+    - Provide clear, educational explanations suitable for students
+    - Include source citations in square brackets after each relevant fact
+    - If the question is about concepts not in the documents, explain what you can from the available material
+    - Use examples and analogies when helpful for understanding
+    - If unsure or information is incomplete, say: "Based on the available materials, [your answer]. For more complete information, you may need to consult additional resources."
+    - Be encouraging and supportive in your tone
 
-    Context:
+    Context from academic materials:
     {context}
 
-    Question:
+    Student's question:
     {question}
 
-    Answer:
+    Helpful answer:
     """
     PROMPT = PromptTemplate(
         template=prompt_template, input_variables=["context", "question"]
@@ -135,14 +141,15 @@ def initialize_rag_system():
         return_source_documents=True,
     )
 
-    logging.info("Advanced Legal Document RAG System initialized")
+    logging.info("Academic Study Assistant RAG System initialized")
     return qa_chain
 
 
 #  Ask questions loop
 
 def ask_questions(qa_chain):
-    logging.info("📚 Advanced Legal Document Q&A Ready!")
+    logging.info("🎓 Academic Study Assistant Ready!")
+    logging.info("Ask me anything about your course materials!")
     logging.info("Type 'exit' to quit")
 
     while True:
@@ -163,10 +170,12 @@ def ask_questions(qa_chain):
             logging.info(result["result"])
 
             # Show top sources
-            logging.info("\n Top Sources:")
+            logging.info("\n📖 Sources:")
             for i, doc in enumerate(reranked_docs[:3], 1):
                 source = doc.metadata.get("source", "Unknown")
-                logging.info(f"{i}. {source}")
+                content_type = doc.metadata.get("content_type", "document")
+                page_num = doc.metadata.get("page_number", "?")
+                logging.info(f"{i}. {source} (Page {page_num}) - {content_type}")
 
         except Exception as e:
             logging.error(f" Error: {e}")

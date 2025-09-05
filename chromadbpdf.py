@@ -15,7 +15,7 @@ from PIL import Image
 import torch
 
 from dotenv import load_dotenv
-load_dotenv()  
+load_dotenv(override=True)  
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -148,9 +148,10 @@ def process_pdf(pdf_file: str, pdf_dir: str, text_splitter: RecursiveCharacterTe
                 "page_number": page_num,
                 "chunk_id": i,
                 "document_id": document_id,
-                "document_type": "Legal Document",  
-                "jurisdiction": "Unknown",          
-                "upload_date": upload_date
+                "document_type": "Academic Document",  
+                "subject": "General",          
+                "upload_date": upload_date,
+                "content_type": "lecture_notes" if "lecture" in pdf_file.lower() else "textbook" if "textbook" in pdf_file.lower() else "research_paper" if "paper" in pdf_file.lower() else "general"
             })
             ids.append(f"{document_id}-p{page_num}-c{i}")
 
@@ -158,9 +159,9 @@ def process_pdf(pdf_file: str, pdf_dir: str, text_splitter: RecursiveCharacterTe
 
 def process_all_pdfs():
     # Config
-    pdf_dir = "Ministry Of Defence"
-    persist_directory = "./legal_db"
-    collection_name = "legal_docs"
+    pdf_dir = "university_documents"
+    persist_directory = "./academic_db"
+    collection_name = "academic_docs"
 
     if not os.path.exists(pdf_dir):
         logging.error(f"Directory '{pdf_dir}' does not exist!")
@@ -176,12 +177,12 @@ def process_all_pdfs():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logging.info(f"Using device: {device}")
 
-    # Embeddings
+    # Embeddings - Using a general academic model suitable for university content
     embeddings = HuggingFaceEmbeddings(
-        model_name="nlpaueb/legal-bert-base-uncased",
+        model_name="sentence-transformers/all-MiniLM-L6-v2",
         model_kwargs={"device": device},
     )
-    logging.info("LEGAL-BERT model loaded successfully.")
+    logging.info("Academic embedding model loaded successfully.")
 
     # Text splitter
     text_splitter = RecursiveCharacterTextSplitter(
@@ -219,8 +220,7 @@ def process_all_pdfs():
     logging.info(f"Adding {len(all_chunks)} chunks to ChromaDB (this embeds; may take a while)...")
     vector_db.add_texts(texts=all_chunks, metadatas=all_metadatas, ids=all_ids)
 
-    # Persist once
-    vector_db.persist()
+    # ChromaDB automatically persists data
 
     try:
         collection_size = vector_db._collection.count()

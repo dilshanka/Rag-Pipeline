@@ -6,23 +6,23 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 def view_all_embeddings():
  
     
-    print(" ChromaDB Embedding Viewer")
+    print("🎓 Academic Study Assistant - Database Viewer")
     
     
     try:
         # Connect to ChromaDB
-        persist_directory = "./legal_db"
+        persist_directory = "./academic_db"
         
       
         embeddings = HuggingFaceEmbeddings(
-            model_name="nlpaueb/legal-bert-base-uncased"
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
         )
         
         # Connect to existing vector store
         vector_db = Chroma(
             persist_directory=persist_directory,
             embedding_function=embeddings,
-            collection_name="legal_docs"
+            collection_name="academic_docs"
         )
         
         print("Connected to ChromaDB successfully")
@@ -53,12 +53,12 @@ def view_all_embeddings():
                 sources[source] = []
             sources[source].append(i)
         
-        print(f"\n Documents by source:")
+        print(f"\n📚 Documents by source:")
         for source, indices in sources.items():
-            print(f" {source}: {len(indices)} chunks")
+            print(f"  📄 {source}: {len(indices)} chunks")
         
         # Show sample embeddings
-        print(f"\nSample embeddings:")
+        print(f"\n📖 Sample document chunks:")
         for i in range(min(5, len(results['documents']))):
             doc = results['documents'][i]
             embedding = results['embeddings'][i]
@@ -66,10 +66,11 @@ def view_all_embeddings():
             
             doc_preview = doc[:100] + "..." if len(doc) > 100 else doc
             print(f"\n--- Sample {i+1} ---")
-            print(f"Source: {metadata.get('source', 'Unknown')}")
-            print(f"Text: {doc_preview}")
-            print(f"Embedding (first 10 dims): {embedding[:10]}")
-            print(f"Vector magnitude: {np.linalg.norm(embedding):.4f}")
+            print(f"📄 Source: {metadata.get('source', 'Unknown')}")
+            print(f"📝 Content Type: {metadata.get('content_type', 'general')}")
+            print(f"📄 Page: {metadata.get('page_number', '?')}")
+            print(f"📖 Text: {doc_preview}")
+            print(f"🔢 Vector magnitude: {np.linalg.norm(embedding):.4f}")
         
         # Embedding statistics
         print(f"\n Embedding Statistics:")
