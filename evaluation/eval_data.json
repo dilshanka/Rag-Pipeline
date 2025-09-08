@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "user_input": "What is the role of tokenization in large language models?",
+    "reference": "Tokenization breaks input text into smaller units called tokens, which are mapped into embeddings for neural network processing."
+  },
+  {
+    "id": "q2",
+    "user_input": "Explain the difference between zero-shot, one-shot, and few-shot learning in prompt engineering.",
+    "reference": "Zero-shot learning requires no examples, one-shot provides a single example, and few-shot provides multiple examples to guide the model's response."
+  },
+  {
+    "id": "q3",
+    "user_input": "What is the function of multi-head self-attention in transformers?",
+    "reference": "Multi-head self-attention allows the model to focus on different parts of the input sequence simultaneously, capturing various relationships between tokens."
+  },
+  {
+    "id": "q4",
+    "user_input": "What does temperature control in text generation?",
+    "reference": "Temperature adjusts randomness in text generation: lower values make outputs more focused and deterministic, while higher values increase creativity and diversity."
+  },
+  {
+    "id": "q5",
+    "user_input": "What is Retrieval-Augmented Generation (RAG)?",
+    "reference": "RAG is an architecture that enhances LLMs by retrieving relevant external documents and combining them with the model’s reasoning to improve accuracy."
+  },
+  {
+    "id": "q6",
+    "user_input": "Define an AI agent and its key characteristics.",
+    "reference": "An AI agent is a software system that perceives its environment, makes decisions, and acts to achieve goals autonomously. It can adapt, learn, and collaborate with other agents."
+  },
+  {
+    "id": "q7",
+    "user_input": "What is the Model Context Protocol (MCP) and why is it important?",
+    "reference": "MCP is a standard that connects AI agents with other agents, external data, and tools. It ensures interoperability, security, and scalability for complex AI systems."
+  },
+  {
+    "id": "q8",
+    "user_input": "List three best practices in prompt engineering mentioned in the document.",
+    "reference": "Examples include: breaking complex tasks into smaller steps, assigning roles to the model, and using clear delimiters or structured instructions."
+  },
+  {
+    "id": "q9",
+    "user_input": "How does beam search differ from greedy decoding in transformer-based text generation?",
+    "reference": "Greedy decoding selects the highest probability token at each step, while beam search explores multiple candidate sequences to find more optimal results."
+  },
+  {
+    "id": "q10",
+    "user_input": "Why is faithfulness an important metric in evaluating RAG systems?",
+    "reference": "Faithfulness ensures that the model's generated answer is supported by retrieved context, reducing hallucinations and maintaining factual accuracy."
+  }
+]
