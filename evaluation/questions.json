@@ -1,0 +1,62 @@
+[
+  {
+    "id": "q1",
+    "question": "What is the role of tokenization in large language models?",
+    "gold_answer": "Tokenization breaks input text into smaller units called tokens, which are mapped into embeddings for neural network processing.",
+    "relevant_context": []
+  },
+  {
+    "id": "q2",
+    "question": "Explain the difference between zero-shot, one-shot, and few-shot learning in prompt engineering.",
+    "gold_answer": "Zero-shot learning requires no examples, one-shot provides a single example, and few-shot provides multiple examples to guide the model's response.",
+    "relevant_context": []
+  },
+  {
+    "id": "q3",
+    "question": "What is the function of multi-head self-attention in transformers?",
+    "gold_answer": "Multi-head self-attention allows the model to focus on different parts of the input sequence simultaneously, capturing various relationships between tokens.",
+    "relevant_context": []
+  },
+  {
+    "id": "q4",
+    "question": "What does temperature control in text generation?",
+    "gold_answer": "Temperature adjusts randomness in text generation: lower values make outputs more focused and deterministic, while higher values increase creativity and diversity.",
+    "relevant_context": []
+  },
+  {
+    "id": "q5",
+    "question": "What is Retrieval-Augmented Generation (RAG)?",
+    "gold_answer": "RAG is an architecture that enhances LLMs by retrieving relevant external documents and combining them with the model’s reasoning to improve accuracy.",
+    "relevant_context": []
+  },
+  {
+    "id": "q6",
+    "question": "Define an AI agent and its key characteristics.",
+    "gold_answer": "An AI agent is a software system that perceives its environment, makes decisions, and acts to achieve goals autonomously. It can adapt, learn, and collaborate with other agents.",
+    "relevant_context": []
+  },
+  {
+    "id": "q7",
+    "question": "What is the Model Context Protocol (MCP) and why is it important?",
+    "gold_answer": "MCP is a standard that connects AI agents with other agents, external data, and tools. It ensures interoperability, security, and scalability for complex AI systems.",
+    "relevant_context": []
+  },
+  {
+    "id": "q8",
+    "question": "List three best practices in prompt engineering mentioned in the document.",
+    "gold_answer": "Examples include: breaking complex tasks into smaller steps, assigning roles to the model, and using clear delimiters or structured instructions.",
+    "relevant_context": []
+  },
+  {
+    "id": "q9",
+    "question": "How does beam search differ from greedy decoding in transformer-based text generation?",
+    "gold_answer": "Greedy decoding selects the highest probability token at each step, while beam search explores multiple candidate sequences to find more optimal results.",
+    "relevant_context": []
+  },
+  {
+    "id": "q10",
+    "question": "Why is faithfulness an important metric in evaluating RAG systems?",
+    "gold_answer": "Faithfulness ensures that the model's generated answer is supported by retrieved context, reducing hallucinations and maintaining factual accuracy.",
+    "relevant_context": []
+  }
+]
